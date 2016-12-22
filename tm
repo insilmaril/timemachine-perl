@@ -168,7 +168,6 @@ if ($opt_week) {
     } else {
         $Db=26;$Mb=1,$Yb=1970;
     }
-    print "db=$Db  mb=$Mb  yb=$Yb\n";
 
     if ($opt_end) {
         ($De, $Me, $Ye) = smartDate ($opt_end);
