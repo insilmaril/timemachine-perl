@@ -249,7 +249,7 @@ sub smartDate {  # allow e.g. 24.12. or just 24 for date
     my @a;
 
     $date =~ /\s*([0-9]+)/;
-    $a[0] = defined($2) ?  $1: $Dn;
+    $a[0] = defined($1) ?  $1: $Dn;
 
     $date =~ /\s*([0-9]+)\.([0-9]+)/;
     $a[1] = defined($2) ?  $2: $Mn;
