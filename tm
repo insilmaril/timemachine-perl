@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Timemachine -- written by Uwe Drechsel   uwedr@suse.de
+# Timemachine -- written by Uwe Drechsel   
 #
 my $version=3.3;
 #
