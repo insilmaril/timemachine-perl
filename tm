@@ -2,8 +2,9 @@
 
 # Timemachine -- written by Uwe Drechsel   
 #
-my $version=3.3;
+my $version=3.4;
 #
+#   3.5     2017-02-03	Print data lines when -t is used
 #   3.4     2016-12-22	Allow e.g. "24.12" as begin or end date. Or just "24"
 #   3.3     2004-06-14	Converted everything to UTF8
 #   3.2     2004-06-14	UTF8 Fix
@@ -459,7 +460,7 @@ sub analyze{			    # FILE auswerten
 	    /([0-9]+)\.([0-9]+)\.([0-9]+)/;
 	    $D0=$1; $M0=$2; $Y0=$3; 
 	    if (daterange ($Db,$Mb,$Yb, $D0,$M0,$Y0, $De,$Me,$Ye)) {
-		if ($opt_grep) {
+		if ($opt_grep || $opt_today) {
 		    # Show lines if grep is used, just to be sure
 		    print "$_";
 		}
