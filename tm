@@ -2,8 +2,9 @@
 
 # Timemachine -- written by Uwe Drechsel   
 #
-my $version=3.4;
+my $version=3.6;
 #
+#   3.6     2017-03-20	Added option -be to print single day
 #   3.5     2017-02-03	Print data lines when -t is used
 #   3.4     2016-12-22	Allow e.g. "24.12" as begin or end date. Or just "24"
 #   3.3     2004-06-14	Converted everything to UTF8
@@ -56,6 +57,7 @@ use Date::Calc qw (:all);  # xxx
 use Getopt::Long;
 GetOptions (
     "b=s"=> \$opt_begin,
+    "be=s"=> \$opt_begin_end,
     "c=s"=> \$opt_comment,
     "e=s"=> \$opt_end,
     "d!" => \$opt_debug,
@@ -112,6 +114,7 @@ usage: $0 [-h][-f filenames][comment]
   -l     Lesson English (ends session with §Lesson English§)
   -b     Begin Daterange (format DD or DD.MM or DD.MM.YYYY. default: today)
   -e     Ende Daterange  (format DD or DD.MM or DD.MM.YYYY. default: today)
+  -be    Begin and end daterange (format DD or DD.MM or DD.MM.YYYY. default: today)
   -s     SZE-entries 
   -t     worktime today 
   -v     open data in \$EDITOR (or in vi)
@@ -174,7 +177,12 @@ if ($opt_week) {
         ($De, $Me, $Ye) = smartDate ($opt_end);
     } elsif ($opt_today)  
 	{$Db=$Dn;$Mb=$Mn,$Yb=$Yn; $De=$Dn;$Me=$Mn,$Ye=$Yn;}
-    else
+    elsif ($opt_begin_end) {
+        ($Db, $Mb, $Yb) = smartDate ($opt_begin_end);
+        ($De, $Me, $Ye) = smartDate ($opt_begin_end);
+        $opt_grep = ".";
+
+    } else
 	{$De=$Dn;$Me=$Mn,$Ye=$Yn;}
 }	
 
