@@ -180,7 +180,10 @@ if ($opt_week) {
     elsif ($opt_begin_end) {
         ($Db, $Mb, $Yb) = smartDate ($opt_begin_end);
         ($De, $Me, $Ye) = smartDate ($opt_begin_end);
-        $opt_grep = ".";
+        if (!$opt_grep) {  
+            # Show everything, if no explicit grep is set
+            $opt_grep = ".";
+        }
 
     } else
 	{$De=$Dn;$Me=$Mn,$Ye=$Yn;}
