@@ -4,6 +4,8 @@
 #
 my $version=3.6;
 #
+#   3.8     2017-01-12  Sanity check if login time > current timeo to
+#                       find forgotten logout on previous day
 #   3.7     2018-01-11  Disabled currently unused fields in report
 #   3.6     2017-03-20	Added option -be to print single day
 #   3.5     2017-02-03	Print data lines when -t is used
@@ -81,6 +83,11 @@ $Dn=`date +%d`; chop ($Dn);
 $hn=`date +%k`; chop ($hn);
 $mn=`date +%M`; chop ($mn);
 $sn=`date +%S`; chop ($sn);
+
+# Letzte Anfangszeit (für sanity check, aus analyze)
+my $h_login;
+my $m_login;
+my $s_login;
 
 # Global variables
 my ($Db,$Mb,$Yb,$De,$Me,$Ye);	# Begin and end of daterange
@@ -516,6 +523,12 @@ sub analyze{			    # FILE auswerten
 		    # Anfangszeit auslesen (Datum ist schon da)
 		    /([0-9]+):([0-9]+):([0-9]+)/;
 		    $h0=$1;$m0=$2;$s0=$3;
+
+                    # Anfangszeit merken für sanity check
+                    $h_login =$h0;
+                    $m_login =$m0;
+                    $s_login =$s0;
+                    
 		    # Endzeit auslesen bzw. auf aktuelle Zeit setzen
 		    if (/>/) {
 			/>([0-9]+):([0-9]+):([0-9]+)/;
@@ -528,8 +541,6 @@ sub analyze{			    # FILE auswerten
 		    }
 	    
 		    # Differenz Anfang->Ende ausrechnen
-#		    ($Dd,$hd,$md,$sd)=Delta_DHMS($Y0,$M0,$D0,$h0,$m0,$s0,
-#						$Y1,$M1,$D1,$h1,$m1,$s1);
 		    ($Dd,$hd,$md,$sd)=sub_time ($D0,$h0,$m0,$s0,
 						$D1,$h1,$m1,$s1);
 	    
@@ -538,7 +549,7 @@ sub analyze{			    # FILE auswerten
 						$Dd,$hd,$md,$sd);
 		    ($Dt,$ht,$mt,$st)=add_time($Dt,$ht,$mt,$st,
 						$Dd,$hd,$md,$sd);
-		} # End of no �
+		} # End of no 
 		debug ("Day $Y0-$M0-$D0 workdays: $work (KA: $work_ka) Sum today: $ht:$mt Diff: d=$Dd d $hd:$md:$sd  Sum total= $Ds d $hs:$ms:$ss");
 	    } # End of in daterange
 	} # End of line containing a number
@@ -662,6 +673,15 @@ sub leave {				# Ende  Arbeit
     if (!$working) 
 	{print "\nDu bist gar nicht am arbeiten?!\n\n";}
     else {
+        # Sanity check, if we maybe forgot to logout the previous day...
+        if ($h_login > $hn) 
+        {
+            print "Forgot to logout on previous day?!\n\n";
+            print "Current time: $hn:$mn:$sn\n";
+            print "Login   time: $h_login:$m_login:$s_login\n";
+        }
+        exit;
+
 	my ($out);
 	my ($FILENAME)=@_;
 	open (AFH,">>$FILENAME") or die "Couldn't open $FILENAME!\n";
