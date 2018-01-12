@@ -4,6 +4,7 @@
 #
 my $version=3.6;
 #
+#   3.7     2018-01-11  Disabled currently unused fields in report
 #   3.6     2017-03-20	Added option -be to print single day
 #   3.5     2017-02-03	Print data lines when -t is used
 #   3.4     2016-12-22	Allow e.g. "24.12" as begin or end date. Or just "24"
@@ -563,19 +564,19 @@ sub report{			    # Report generieren
 	time2text($hn,$mn,$sn),"\n";
     print  "==========================================\n";
     printf "       Arbeitstage: %4d \n",$work;
-    printf "  Kurz-Arbeitstage: %4d \n",$work_ka;
-    printf "        Resturlaub: %4d \n",$urlaub;
-    printf " Freizeitausgleich: %4d \n",$freizeit;
+    #printf "  Kurz-Arbeitstage: %4d \n",$work_ka;
+    #printf "        Resturlaub: %4d \n",$urlaub;
+    #printf " Freizeitausgleich: %4d \n",$freizeit;
 
     printf "      Summe bisher: %4d:%02d \n",$Ds*24+$hs,$ms;
 
     # @over is needed until I changed the time format completly:      
     my @over=sub_time (	$Ds,$hs,$ms,$ss,0,8*($work) + 7*$work_ka,0,0,0);  
 
-	if ($over[4]<0) {
-	    printf "       Überstunden:   -%2d:%02d\n",($over[1]+24*$over[0]),$over[2];
+       if ($over[4]<0) {
+	    printf "       Überstunden:  -%2d:%02d\n",($over[1]+24*$over[0]),$over[2];
 	} else {
-	    printf "       Überstunden:  %4d:%02d\n",($over[1]+24*$over[0]),$over[2];
+	    printf "       Überstunden: %4d:%02d\n",($over[1]+24*$over[0]),$over[2];
 	}
     print  "           Comment: $c\n",
 	   "            Status: ";
@@ -628,8 +629,8 @@ sub enter {				# Anfang Arbeit
     my $out;
 
     # Kein Autobuild während meiner Arbeitszeit
-    system ("touch /tmp/noautobuild");
-    print "I have touched /tmp/noautobuild for your convenience!\n";
+    #system ("touch /tmp/noautobuild");
+    #print "I have touched /tmp/noautobuild for your convenience!\n";
 
     if ($working) 
 	{print "\nDu bist bereits am arbeiten?!\n\n";}
