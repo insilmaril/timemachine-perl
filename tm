@@ -674,7 +674,8 @@ sub enter {				# Anfang Arbeit
 	    $out=$out . " ";
 	}
 	if ($opt_lesson) { $out = $out . "§Englisch§\n".$out;}
-	$out=$out . sprintf ("%02i:%02i:%02i",$hn,$mn,$sn);
+        # old long format: $out=$out . sprintf ("%02i:%02i:%02i",$hn,$mn,$sn);
+	$out=$out . sprintf ("%02i:%02i",$hn,$mn);
 	print AFH "$out-";
 	close (AFH) or die "Error while closing $FILENAME!\n";
 	$working=1;
@@ -701,7 +702,8 @@ sub leave {				# Ende  Arbeit
 	my ($out);
 	my ($FILENAME)=@_;
 	open (AFH,">>$FILENAME") or die "Couldn't open $FILENAME!\n";
-	$out=">" . sprintf ("%02i:%02i:%02i",$hn,$mn,$sn);
+        # old long format: $out=">" . sprintf ("%02i:%02i:%02i",$hn,$mn,$sn);
+	$out=">" . sprintf ("%02i:%02i",$hn,$mn);
 
 	# Falls Kommentar vorhanden, diesen anh�ngen
 	if (-f $COMMFILE) {
