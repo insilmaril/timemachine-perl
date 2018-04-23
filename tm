@@ -521,8 +521,16 @@ sub analyze{			    # FILE auswerten
 		} # End of � 
 		else {
 		    # Anfangszeit auslesen (Datum ist schon da)
-		    /([0-9]+):([0-9]+):([0-9]+)/;
-		    $h0=$1;$m0=$2;$s0=$3;
+                    if (/([0-9]+):([0-9]+):([0-9]+)/) {
+                        $h0 = $1; $m0 = $2; $s0 = $3;
+                    } else  {
+                        if (/([0-9]+):([0-9]+)/) {
+                            $h0 = $1; $m0 = $2; $s0 = 0;
+                        } else {
+                            print "Problem reading start time in $_";
+                            exit;
+                        }
+                    }
 
                     # Anfangszeit merken für sanity check
                     $h_login =$h0;
@@ -531,8 +539,17 @@ sub analyze{			    # FILE auswerten
                     
 		    # Endzeit auslesen bzw. auf aktuelle Zeit setzen
 		    if (/>/) {
-			/>([0-9]+):([0-9]+):([0-9]+)/;
-			$D1=$D0;$M1=$M0;$Y1=$Y0; $h1=$1;$m1=$2;$s1=$3;
+                        if (/>([0-9]+):([0-9]+):([0-9]+)/) {
+                            $h1 = $1; $m1 = $2; $s1 = $3;
+                        } else  {
+                            if (/>([0-9]+):([0-9]+)/) {
+                                $h1 = $1; $m1 = $2; $s1 = 0;
+                            } else {
+                                print "Problem reading end time in $_";
+                                exit;
+                            }
+                        }
+			$D1=$D0;$M1=$M0;$Y1=$Y0; 
 			$working =0;
 		    }	
 		    else { 
@@ -680,7 +697,6 @@ sub leave {				# Ende  Arbeit
             print "Current time: $hn:$mn:$sn\n";
             print "Login   time: $h_login:$m_login:$s_login\n";
         }
-        exit;
 
 	my ($out);
 	my ($FILENAME)=@_;
