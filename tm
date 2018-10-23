@@ -99,9 +99,10 @@ my ($urlaub);		# number of vacation days
 my ($freizeit);		# number of days with "Freizeitausgleich"
 
 # Filenames
-
-my ($DATAFILE)="$ENV{'HOME'}/.tmdata";
-my ($COMMFILE)="$ENV{'HOME'}/.tmcomment";
+my $DATAFILENAME = ".tmdata";
+my $COMMFILENAME = ".tmcomment";
+my ($DATAFILE) = "$ENV{'HOME'}/$DATAFILENAME";
+my ($COMMFILE) = "$ENV{'HOME'}/$COMMFILENAME";
 
 if ($opt_edit)	{ edit  ($DATAFILE); }
 
@@ -114,7 +115,7 @@ Timemachine written by Uwe Drechsel - Version $version
 usage: $0 [-h][-f filenames][comment]
   -h     help
   -f     Filename
-  -g     grep befory generating a report e.g. grep for a comment
+  -g     grep befor generating a report e.g. grep for a comment
   -i     in      
   -o     out     
   -c     comment and new login (comment is added after loggin out) 
@@ -131,17 +132,17 @@ usage: $0 [-h][-f filenames][comment]
 
 
 Installation:
-    Please install /suse/perl2/perl-Date-Calc.rpm
+    Please install perl-Date-Calc.rpm
     and touch the DATAFILE, e.g.
-    touch $DATAFILE
+    touch \$HOME/$DATAFILENAME
 
 Files:
     Timemachine uses two files: DATAFILE and COMMFILE. 
-    DATAFILE=$DATAFILE
+    DATAFILE=\$HOME/$DATAFILENAME
 
     is used to store the information about logins, logouts, comments. 
-    Before the first use of timemachine you should create it by
-    touch $DATAFILE
+    (Before the first use of timemachine you should create it by
+    touch \$HOME/$DATAFILENAME)
 
     In this file you have:
       * 
@@ -159,7 +160,7 @@ Files:
 	certain lines with the -g option
 
 
-    COMMFILE=$COMMFILE
+    COMMFILE=\$HOME/$COMMFILENAME
 
     is used to save the comment for writing it later to DATAFILE
 Helpende
