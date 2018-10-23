@@ -36,7 +36,7 @@ my $version=3.6;
 #   
 #	
 # Requested Features:
-#   - kostenstellen
+#   - Cost centers
 #   - alias for comments
 #
 # Dataformats:
@@ -591,20 +591,20 @@ sub report{			    # Report generieren
 	date2text($De,$Me,$Ye),"      ", 
 	time2text($hn,$mn,$sn),"\n";
     print  "==========================================\n";
-    printf "       Arbeitstage: %4d \n",$work;
+    printf "          Workdays: %4d \n",$work;
     #printf "  Kurz-Arbeitstage: %4d \n",$work_ka;
     #printf "        Resturlaub: %4d \n",$urlaub;
     #printf " Freizeitausgleich: %4d \n",$freizeit;
 
-    printf "      Summe bisher: %4d:%02d \n",$Ds*24+$hs,$ms;
+    printf "        Sum so far: %4d:%02d \n",$Ds*24+$hs,$ms;
 
     # @over is needed until I changed the time format completly:      
     my @over=sub_time (	$Ds,$hs,$ms,$ss,0,8*($work) + 7*$work_ka,0,0,0);  
 
        if ($over[4]<0) {
-	    printf "       Überstunden:  -%2d:%02d\n",($over[1]+24*$over[0]),$over[2];
+	    printf "          Overtime:  -%2d:%02d\n",($over[1]+24*$over[0]),$over[2];
 	} else {
-	    printf "       Überstunden: %4d:%02d\n",($over[1]+24*$over[0]),$over[2];
+	    printf "          Overtime: %4d:%02d\n",($over[1]+24*$over[0]),$over[2];
 	}
     print  "           Comment: $c\n",
 	   "            Status: ";
@@ -612,7 +612,7 @@ sub report{			    # Report generieren
 	print "out\n";
     } else {
 	if (!$working) {
-	    print "in (Kein Werktag) \n";
+	    print "in (No workday) \n";
 	} else {
 	    print "in \n";
 	}
@@ -626,7 +626,7 @@ sub readfile {                      # Read file
     my ($filename) =@_;
     my (@lines);
     open (INFILE, "<$filename") ||
-    die "Datei $filename nicht lesbar";
+    die "File $filename not readable";
     @lines=<INFILE>;
     return @lines;
 }
@@ -661,7 +661,7 @@ sub enter {				# Anfang Arbeit
     #print "I have touched /tmp/noautobuild for your convenience!\n";
 
     if ($working) 
-	{print "\nDu bist bereits am arbeiten?!\n\n";}
+	{print "\nYou are already working?!\n\n";}
     else {
 	my ($out);
 	my ($FILENAME)=@_;
@@ -689,7 +689,7 @@ sub leave {				# Ende  Arbeit
     my @s;
 
     if (!$working) 
-	{print "\nDu bist gar nicht am arbeiten?!\n\n";}
+	{print "\nYou are currently not working?!\n\n";}
     else {
         # Sanity check, if we maybe forgot to logout the previous day...
         if ($h_login > $hn) 
