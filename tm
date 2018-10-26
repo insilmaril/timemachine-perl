@@ -4,6 +4,7 @@
 #
 my $version=3.6;
 #
+#   3.9     2018-10-26  Added color output using Term::ANSIColor
 #   3.8     2017-01-12  Sanity check if login time > current timeo to
 #                       find forgotten logout on previous day
 #   3.7     2018-01-11  Disabled currently unused fields in report
@@ -56,6 +57,7 @@ my $version=3.6;
 #use strict;
 
 use Date::Calc qw (:all);  # xxx
+use Term::ANSIColor qw(:constants);
 
 use Getopt::Long;
 GetOptions (
@@ -662,7 +664,7 @@ sub enter {				# Anfang Arbeit
     #print "I have touched /tmp/noautobuild for your convenience!\n";
 
     if ($working) 
-	{print "\nYou are already working?!\n\n";}
+	{print RED, "\nYou are already working?!\n\n", RESET;}
     else {
 	my ($out);
 	my ($FILENAME)=@_;
@@ -690,14 +692,14 @@ sub leave {				# Ende  Arbeit
     my @s;
 
     if (!$working) 
-	{print "\nYou are currently not working?!\n\n";}
+	{print RED, "\nYou are currently not working?!\n\n", RESET;}
     else {
         # Sanity check, if we maybe forgot to logout the previous day...
         if ($h_login > $hn) 
         {
-            print "Forgot to logout on previous day?!\n\n";
+            print RED, "Forgot to logout on previous day?!\n\n";
             print "Current time: $hn:$mn:$sn\n";
-            print "Login   time: $h_login:$m_login:$s_login\n";
+            print "Login   time: $h_login:$m_login:$s_login\n", RESET;
         }
 
 	my ($out);
